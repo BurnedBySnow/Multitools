@@ -3,7 +3,7 @@ import styled, { keyframes } from "styled-components";
 
 export const MainPage = styled(motion.div)`
   display: absolute;
-  width: 100vw;
+  width: 94vw;
   height: 100vh;
   justify-content: flex-start;
 `;
@@ -48,7 +48,10 @@ export const PrevResults = styled.div`
   font-size: 30px;
   max-height: 35vh;
   overflow: auto;
+  padding: 10px 0;
 `;
+
+export const PrevResult = styled.div``;
 
 export const Total = styled.div`
   font-size: 30px;
@@ -56,8 +59,6 @@ export const Total = styled.div`
   padding: 20px 20px 0 20px;
   border-top: 3px solid #454b53;
 `;
-
-export const PrevResult = styled.div``;
 
 export const SvgContainer = styled(motion.div)<{ flipping: boolean }>`
   transform-style: preserve-3d;

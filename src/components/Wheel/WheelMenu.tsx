@@ -72,7 +72,7 @@ const WheelMenu = (props: {
             style={{
               backgroundColor: "#454b53",
               borderRadius: 4,
-              marginRight: 8,
+              marginRight: 5,
             }}
             onChange={(e) => setNewInput(e.target.value)}
           />

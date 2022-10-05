@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const MainPage = styled(motion.div)`
   position: absolute;
   display: flex;
-  width: 100vw;
+  width: 94vw;
   height: 100vh;
   justify-content: center;
 `;
