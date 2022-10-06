@@ -42,13 +42,15 @@ export const Result = styled.div`
   max-height: 50vh;
 `;
 
-export const PrevResults = styled.div`
+export const PrevResults = styled.div<{ borders: boolean }>`
   display: flex;
   flex-direction: column;
   font-size: 30px;
   max-height: 35vh;
   overflow: auto;
   padding: 10px 0;
+  border-top: ${(p) => (p.borders ? "3px solid #454b53" : "")};
+  border-bottom: ${(p) => (p.borders ? "3px solid #454b53" : "")};
 `;
 
 export const PrevResult = styled.div``;
@@ -57,7 +59,6 @@ export const Total = styled.div`
   font-size: 30px;
   text-align: center;
   padding: 20px 20px 0 20px;
-  border-top: 3px solid #454b53;
 `;
 
 export const SvgContainer = styled(motion.div)<{ flipping: boolean }>`

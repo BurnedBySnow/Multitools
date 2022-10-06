@@ -30,25 +30,25 @@ interface LineProps {
 
 const Wheel = () => {
   const [items, setItems] = useState<Item[]>([]);
-  const [colors, setColors] = useState<string[] | undefined>();
   const [winner, setWinner] = useState<{ text: string; show: boolean }>({
     text: "",
     show: false,
   });
+  const [spinning, setSpinning] = useState<boolean>(false);
 
   const controls = useAnimationControls();
 
   ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
   const setTextRotation = () => {
-    let arrLength = items.filter((item) => item.enabled).length;
+    const tempItems = items.filter((item) => item.enabled);
     let arr: Array<number> = [];
     let totalProb = 0;
-    items.forEach((item) => {
+    tempItems.forEach((item) => {
       totalProb += item.probability;
     });
     let i = 0;
-    items.forEach((item) => {
+    tempItems.forEach((item) => {
       let angle = (item.probability / totalProb) * 360;
       arr.push(-180 + 90 + angle / 2 + i);
       i += angle;
@@ -57,44 +57,65 @@ const Wheel = () => {
   };
 
   const spinWheel = () => {
-    setWinner({ ...winner, show: false });
-    const max = 4680;
-    const min = 4320;
-    let arrLength = items.filter((item) => item.enabled).length;
-    let totalProb = 0;
-    items.forEach((item) => {
-      totalProb += item.probability;
-    });
-    const gap: number[] = [0];
-    for (let i = 0; i < arrLength - 1; i++) {
-      let angle = (items[i].probability / totalProb) * 360;
-      gap.push(angle + gap[i]);
-    }
-    gap.push(360);
-    let rotation = Math.floor(Math.random() * (max - min + 1)) + min;
-    if (gap.includes(rotation - 4320)) {
-      rotation += 1;
-    }
-    controls.set({ rotate: 0 });
-    controls.start({ rotate: rotation });
-    setTimeout(() => {
-      let calc = max - rotation;
-      for (let i = 0; i < arrLength; i++) {
-        if (calc >= gap[i] && calc <= gap[i + 1]) {
-          setWinner({ text: items[i].label + " Wins!", show: true });
-        }
+    if (!spinning) {
+      setSpinning(true);
+      setWinner({ ...winner, show: false });
+      const tempItems = items.filter((item) => item.enabled);
+      const max = 4680;
+      const min = 4320;
+      let arrLength = tempItems.length;
+      let totalProb = 0;
+      tempItems.forEach((item) => {
+        totalProb += item.probability;
+      });
+      const gap: number[] = [0];
+      for (let i = 0; i < arrLength - 1; i++) {
+        let angle = (tempItems[i].probability / totalProb) * 360;
+        gap.push(angle + gap[i]);
       }
-    }, 8500);
+      gap.push(360);
+      let rotation = Math.floor(Math.random() * (max - min + 1)) + min;
+      if (gap.includes(rotation - 4320)) {
+        rotation += 1;
+      }
+      controls.set({ rotate: 0 });
+      controls.start({ rotate: rotation });
+      setTimeout(() => {
+        let calc = max - rotation;
+        for (let i = 0; i < arrLength; i++) {
+          if (calc >= gap[i] && calc <= gap[i + 1]) {
+            setWinner({ text: tempItems[i].label + " Wins!", show: true });
+          }
+        }
+        setSpinning(false);
+      }, 8500);
+    }
+  };
+
+  const getData = () => {
+    let arr = items
+      .filter((item) => item.enabled)
+      .map((item) => item.probability);
+    if (arr.length === 0) {
+      arr = [1, 1, 1, 1];
+    }
+    return arr;
+  };
+
+  const getLabels = () => {
+    let arr = items.filter((item) => item.enabled).map((item) => item.label);
+    if (arr.length === 0) {
+      arr = ["yes", "no", "yes", "no"];
+    }
+    return arr;
   };
 
   const data = {
-    labels: items.filter((item) => item.enabled).map((item) => item.label),
+    labels: getLabels(),
     datasets: [
       {
-        data: items
-          .filter((item) => item.enabled)
-          .map((item) => item.probability),
-        backgroundColor: colors ?? ["red", "blue", "green", "orange"],
+        data: getData(),
+        backgroundColor: ["red", "blue", "green", "orange"],
       },
     ],
   };
@@ -158,7 +179,9 @@ const Wheel = () => {
           </WinnerDiv>
         </div>
         <Container>
-          <SpinButton onClick={() => spinWheel()}>Spin</SpinButton>
+          <SpinButton onClick={() => spinWheel()} spinning={spinning}>
+            Spin
+          </SpinButton>
           <WheelDiv
             animate={controls}
             transition={{ duration: 8, ease: "easeOut" }}

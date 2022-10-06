@@ -39,7 +39,7 @@ export const WheelDiv = styled(motion.div)`
   margin-top: 100px;
 `;
 
-export const SpinButton = styled(motion.div)`
+export const SpinButton = styled(motion.div)<{ spinning: boolean }>`
   border-radius: 100%;
   display: flex;
   width: 150px;
@@ -52,7 +52,7 @@ export const SpinButton = styled(motion.div)`
   user-select: none;
   box-shadow: 0 0 3px 4px rgba(0, 0, 0, 0.5);
   margin-top: 100px;
-  cursor: pointer;
+  cursor: ${(p) => (p.spinning ? "default" : "pointer")};
   z-index: 100;
   ::before {
     content: "";

@@ -75,7 +75,6 @@ const CoinFlip = () => {
             onClick={() => setShowPrevResults(!showPrevResults)}
             style={{
               paddingBottom: "20px",
-              borderBottom: "3px solid #454b53",
               cursor: "pointer",
               userSelect: "none",
             }}
@@ -84,7 +83,7 @@ const CoinFlip = () => {
           </div>
           {showPrevResults && (
             <div>
-              <PrevResults>
+              <PrevResults borders={results.length > 0}>
                 {results.map((result) => (
                   <PrevResult>{result}</PrevResult>
                 ))}
