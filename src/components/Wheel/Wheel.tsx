@@ -57,39 +57,38 @@ const Wheel = () => {
   };
 
   const spinWheel = () => {
-    if (!spinning) {
-      setSpinning(true);
-      setWinner({ ...winner, show: false });
-      const tempItems = items.filter((item) => item.enabled);
-      const max = 4680;
-      const min = 4320;
-      let arrLength = tempItems.length;
-      let totalProb = 0;
-      tempItems.forEach((item) => {
-        totalProb += item.probability;
-      });
-      const gap: number[] = [0];
-      for (let i = 0; i < arrLength - 1; i++) {
-        let angle = (tempItems[i].probability / totalProb) * 360;
-        gap.push(angle + gap[i]);
-      }
-      gap.push(360);
-      let rotation = Math.floor(Math.random() * (max - min + 1)) + min;
-      if (gap.includes(rotation - 4320)) {
-        rotation += 1;
-      }
-      controls.set({ rotate: 0 });
-      controls.start({ rotate: rotation });
-      setTimeout(() => {
-        let calc = max - rotation;
-        for (let i = 0; i < arrLength; i++) {
-          if (calc >= gap[i] && calc <= gap[i + 1]) {
-            setWinner({ text: tempItems[i].label + " Wins!", show: true });
-          }
-        }
-        setSpinning(false);
-      }, 8500);
+    if (spinning) return;
+    setSpinning(true);
+    setWinner({ ...winner, show: false });
+    const tempItems = items.filter((item) => item.enabled);
+    const max = 4680;
+    const min = 4320;
+    let arrLength = tempItems.length;
+    let totalProb = 0;
+    tempItems.forEach((item) => {
+      totalProb += item.probability;
+    });
+    const gap: number[] = [0];
+    for (let i = 0; i < arrLength - 1; i++) {
+      let angle = (tempItems[i].probability / totalProb) * 360;
+      gap.push(angle + gap[i]);
     }
+    gap.push(360);
+    let rotation = Math.floor(Math.random() * (max - min + 1)) + min;
+    if (gap.includes(rotation - 4320)) {
+      rotation += 1;
+    }
+    controls.set({ rotate: 0 });
+    controls.start({ rotate: rotation });
+    setTimeout(() => {
+      let calc = max - rotation;
+      for (let i = 0; i < arrLength; i++) {
+        if (calc >= gap[i] && calc <= gap[i + 1]) {
+          setWinner({ text: tempItems[i].label + " Wins!", show: true });
+        }
+      }
+      setSpinning(false);
+    }, 8500);
   };
 
   const getData = () => {

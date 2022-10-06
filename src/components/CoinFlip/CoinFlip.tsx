@@ -30,26 +30,25 @@ const CoinFlip = () => {
   const parent = useRef(null);
 
   const flipCoin = () => {
-    if (!flipping) {
-      setFlipping(true);
-      let i = Math.floor(Math.random() * 2);
-      controls.set({ rotateY: side === "heads" ? 0 : 180 });
-      if (i) {
-        setSide("heads");
-        setTimeout(() => {
-          controls.start({ rotateY: 2160 });
-        }, 100);
-      } else {
-        setSide("tails");
-        setTimeout(() => {
-          controls.start({ rotateY: 1980 });
-        }, 100);
-      }
+    if (flipping) return;
+    setFlipping(true);
+    let i = Math.floor(Math.random() * 2);
+    controls.set({ rotateY: side === "heads" ? 0 : 180 });
+    if (i) {
+      setSide("heads");
       setTimeout(() => {
-        i ? addToResults("Heads") : addToResults("Tails");
-        setFlipping(false);
-      }, 3200);
+        controls.start({ rotateY: 2160 });
+      }, 100);
+    } else {
+      setSide("tails");
+      setTimeout(() => {
+        controls.start({ rotateY: 1980 });
+      }, 100);
     }
+    setTimeout(() => {
+      i ? addToResults("Heads") : addToResults("Tails");
+      setFlipping(false);
+    }, 3200);
   };
 
   const addToResults = (result: "Heads" | "Tails") => {
