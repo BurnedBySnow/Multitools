@@ -19,10 +19,12 @@ export const Container = styled.div`
 
 export const DiceContainer = styled.div`
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
   max-width: 70vw;
   min-width: 50vw;
-  margin-bottom: 120px;
+  align-items: center;
+  justify-content: center;
+  gap: 120px;
 `;
 
 export const Button = styled(motion.div)`
@@ -52,7 +54,6 @@ export const DieContainer = styled.section`
   height: 200px;
   position: relative;
   z-index: 20;
-  margin: 20px 120px 0 0;
   perspective: 1000px;
   perspective-origin: 50% 100%;
   :last-child {

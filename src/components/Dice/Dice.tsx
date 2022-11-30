@@ -130,27 +130,19 @@ const Dice = () => {
             </Button>
           )}
         </div>
-        {dice.map((obj, index) => {
-          if (index % 5 === 0) {
+        <DiceContainer>
+          {dice.map((die, index) => {
             return (
-              <DiceContainer>
-                {dice.map(
-                  (die) =>
-                    dice.indexOf(die) >= index &&
-                    dice.indexOf(die) < index + 5 && (
-                      <Die
-                        key={die.id}
-                        dieId={die.id}
-                        dice={dice}
-                        setDice={setDice}
-                        removeDie={removeDie}
-                      ></Die>
-                    )
-                )}
-              </DiceContainer>
+              <Die
+                key={die.id}
+                dieId={die.id}
+                dice={dice}
+                setDice={setDice}
+                removeDie={removeDie}
+              ></Die>
             );
-          }
-        })}
+          })}
+        </DiceContainer>
         {!rolling && (
           <Result
             initial={{ opacity: 0 }}
